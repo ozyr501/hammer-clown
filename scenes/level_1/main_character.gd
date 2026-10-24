@@ -2,11 +2,11 @@ extends CharacterBody2D
 
 const CHARACTER_ACCELERATION = 1200.0
 const CHARACTER_MAX_SPEED = 1500.0
-const CHARACTER_PASSIVE_DECELERATION = 3000.0
+const CHARACTER_PASSIVE_DECELERATION = 4000.0
 
-const THROW_STRENGTH = 0.15
-const MAX_THROW_VELOCITY = 1200.0
-const OVERREACH_MARGIN = 10.0
+const THROW_STRENGTH = 0.40
+const MAX_THROW_VELOCITY = 1400.0
+const OVERREACH_MARGIN = 50.0
 
 @onready var grab_area: Area2D = $Area2D
 @onready var grab_area_shape: CollisionShape2D = $Area2D/CollisionShape2D
@@ -39,11 +39,13 @@ func grab() -> void:
 		return
 
 	for body in grab_area.get_overlapping_bodies():
-		if body is JuggleableBody2D and body.is_in_group("Juggleable"):
-			held_body = body
-			held_offset = body.global_position - global_position
-			held_body.begin_hold()
-			break
+		if not body is JuggleableBody2D:
+			continue
+
+		held_body = body
+		held_offset = body.global_position - global_position
+		held_body.begin_hold()
+		break
 
 
 # physics process

@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://btk6c8eiskgq4"]
+
+[ext_resource type="Texture2D" uid="uid://bysmej6kfye" path="res://assets/cart.png" id="1_j6n64"]
+[ext_resource type="Texture2D" uid="uid://bujois7g8dvtr" path="res://assets/nail.png" id="2_56ogr"]
+[ext_resource type="Script" uid="uid://dukddvlagaybw" path="res://scenes/level_1/cart.gd" id="3_cart"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xrb6a"]
+size = Vector2(196, 60)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0lcih"]
+size = Vector2(40, 62)
+
+[node name="RigidBody2D" type="AnimatableBody2D" unique_id=303385680]
+collision_layer = 4
+collision_mask = 4
+script = ExtResource("3_cart")
+
+[node name="CartSprite" type="Sprite2D" parent="." unique_id=1401267653]
+texture = ExtResource("1_j6n64")
+
+[node name="CartColision" type="CollisionShape2D" parent="." unique_id=415344820]
+shape = SubResource("RectangleShape2D_xrb6a")
+
+[node name="NailSprite" type="Sprite2D" parent="." unique_id=452369737]
+position = Vector2(0, -43)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_56ogr")
+
+[node name="NailArea" type="Area2D" parent="." unique_id=175401638]
+collision_layer = 2
+collision_mask = 2
+
+[node name="NailAreaShape" type="CollisionShape2D" parent="NailArea" unique_id=1240338780]
+position = Vector2(0, -34)
+shape = SubResource("RectangleShape2D_0lcih")
+
+[connection signal="body_entered" from="NailArea" to="." method="_on_nail_area_body_entered"]

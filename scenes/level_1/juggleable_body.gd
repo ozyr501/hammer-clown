@@ -1,12 +1,29 @@
 class_name JuggleableBody2D
 extends RigidBody2D
 
+@onready var arrow: Sprite2D = $Arrow
+
+const TERMINAL_VELOCITY = 1000.0
+
 var _is_held := false
 var _held_transform := Transform2D.IDENTITY
 var _release_requested := false
 var _release_velocity := Vector2.ZERO
 
 var was_thrown := false
+
+func _process(_delta: float) -> void:
+	if global_position.y < 0:
+		arrow.visible = true
+		arrow.global_position = Vector2(global_position.x, 24.0)
+		arrow.global_rotation = 0.0
+	else:
+		arrow.visible = false
+
+
+func _physics_process(delta: float) -> void:
+	if linear_velocity.y > TERMINAL_VELOCITY:
+		linear_velocity.y = TERMINAL_VELOCITY
 
 func begin_hold() -> void:
 	_held_transform = global_transform

@@ -9,12 +9,19 @@ extends Node2D
 @onready var main_character: CharacterBody2D = $MainCharacter
 
 const HAMMER_SCENE = preload("res://scenes/level_1/hammer.tscn")
+const CART = preload("uid://btk6c8eiskgq4")
 
 var score : int = 0
+const BONUS_POINTS = 5
+
+const HAMMER_SPAWN_VERTICAL_VELOCITY = -800.0
+const HAMMER_SPAWN_HORIZONTAL_VELOCITY_RANGE = 300.0
+const HAMMER_SPAWN_HEIGHT = 550.0
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	spawn_hammer()
+	spawn_cart()
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
@@ -54,7 +61,22 @@ func _on_main_menu_pressed() -> void:
 func spawn_hammer():
 	var hammer := HAMMER_SCENE.instantiate() as RigidBody2D
 	add_child(hammer)
-	hammer.global_position = Vector2(randf_range(32.0, 1888.0), 50.0)
+	hammer.global_position = Vector2(randf_range(32.0, 1888.0), HAMMER_SPAWN_HEIGHT)
+	hammer.linear_velocity = Vector2(randf_range(-HAMMER_SPAWN_HORIZONTAL_VELOCITY_RANGE, HAMMER_SPAWN_HORIZONTAL_VELOCITY_RANGE), HAMMER_SPAWN_VERTICAL_VELOCITY)
 
 func _on_hammer_spawn_timer_timeout() -> void:
 	spawn_hammer()
+
+
+func spawn_cart():
+	var cart := CART.instantiate() as AnimatableBody2D
+	cart.connect("score_bonus_points", score_bonus_points)
+	add_child(cart)
+	
+
+func _on_cart_spawn_timer_timeout() -> void:
+	spawn_cart()
+
+func score_bonus_points() -> void:
+	score += BONUS_POINTS
+	label.text = "Score: " + str(score)
