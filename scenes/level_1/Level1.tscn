@@ -3,10 +3,18 @@
 [ext_resource type="Script" uid="uid://dbxlo7u5y7rr4" path="res://scenes/level_1/level_1.gd" id="1_0xxql"]
 [ext_resource type="Texture2D" uid="uid://b4jn3qm4a1yiq" path="res://icon.svg" id="1_a8rhv"]
 [ext_resource type="Script" uid="uid://ce50voeolrnc" path="res://scenes/level_1/main_character.gd" id="2_ff1sk"]
+[ext_resource type="PhysicsMaterial" uid="uid://cgxps2n8fgf76" path="res://materials/wall_material.tres" id="3_cpaln"]
 [ext_resource type="Script" uid="uid://dn5jpe5n8dpp5" path="res://scenes/level_1/juggleable_body.gd" id="3_juggleable"]
 [ext_resource type="Texture2D" uid="uid://t0ve1s2r08sd" path="res://halo.png" id="4_g8mao"]
+[ext_resource type="Theme" uid="uid://dhatq1k57h6e2" path="res://materials/MenuButtonMaterial.tres" id="7_pfovo"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_0pk7q"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_c6ncp"]
+normal = Vector2(1, 0)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_0lcih"]
+normal = Vector2(-1, 0)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0pk7q"]
 size = Vector2(64, 128)
@@ -17,13 +25,13 @@ radius = 72.0
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_xrb6a"]
 normal = Vector2(0, 1)
 
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_pfovo"]
+
 [node name="Level1" type="Node2D" unique_id=1729192901]
 script = ExtResource("1_0xxql")
 
 [node name="Floor" type="StaticBody2D" parent="." unique_id=1235508004]
 position = Vector2(936, 1024)
-collision_layer = 3
-collision_mask = 3
 
 [node name="FloorColider" type="CollisionShape2D" parent="Floor" unique_id=1569185143]
 shape = SubResource("WorldBoundaryShape2D_0pk7q")
@@ -32,6 +40,23 @@ shape = SubResource("WorldBoundaryShape2D_0pk7q")
 position = Vector2(23.99992, 32)
 scale = Vector2(15, 0.47070304)
 texture = ExtResource("1_a8rhv")
+
+[node name="LeftWall" type="StaticBody2D" parent="." unique_id=1288827352]
+collision_layer = 3
+collision_mask = 3
+physics_material_override = ExtResource("3_cpaln")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall" unique_id=63262721]
+shape = SubResource("WorldBoundaryShape2D_c6ncp")
+
+[node name="RightWall" type="StaticBody2D" parent="." unique_id=233634442]
+position = Vector2(1920, 0)
+collision_layer = 3
+collision_mask = 3
+physics_material_override = ExtResource("3_cpaln")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall" unique_id=1639231167]
+shape = SubResource("WorldBoundaryShape2D_0lcih")
 
 [node name="MainCharacter" type="CharacterBody2D" parent="." unique_id=1451177610]
 position = Vector2(936, 952)
@@ -87,9 +112,22 @@ position = Vector2(8.000023, -2)
 scale = Vector2(15, 0.031250004)
 texture = ExtResource("1_a8rhv")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=872330944]
+[node name="LosingArea" type="Area2D" parent="." unique_id=514017580]
+position = Vector2(952, 1026)
+collision_layer = 2
+collision_mask = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=1351215836]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LosingArea" unique_id=1067567324]
+shape = SubResource("WorldBoundaryShape2D_pfovo")
+
+[node name="Sprite2D" type="Sprite2D" parent="LosingArea" unique_id=1849876194]
+position = Vector2(8.000023, -2)
+scale = Vector2(15, 0.031250004)
+texture = ExtResource("1_a8rhv")
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=872330944]
+
+[node name="MarginContainer" type="MarginContainer" parent="UI" unique_id=1351215836]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -101,10 +139,58 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="Label" type="Label" parent="CanvasLayer/MarginContainer" unique_id=1600241787]
+[node name="ScoreLabel" type="Label" parent="UI/MarginContainer" unique_id=1600241787]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 text = "Score: 0"
 
+[node name="GameOverScreen" type="CanvasLayer" parent="." unique_id=92492034]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="GameOverScreen" unique_id=1745734401]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.078431375, 0.078431375, 0.078431375, 0.81960785)
+
+[node name="MarginContainer" type="MarginContainer" parent="GameOverScreen" unique_id=549526114]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameOverScreen/MarginContainer" unique_id=852555294]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 12
+
+[node name="FinalScoreLabel" type="Label" parent="GameOverScreen/MarginContainer/VBoxContainer" unique_id=1425757191]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 64
+text = "Final score: 0"
+
+[node name="Retry" type="Button" parent="GameOverScreen/MarginContainer/VBoxContainer" unique_id=1938425140]
+layout_mode = 2
+theme = ExtResource("7_pfovo")
+text = "Retry"
+
+[node name="Main Menu" type="Button" parent="GameOverScreen/MarginContainer/VBoxContainer" unique_id=811173135]
+layout_mode = 2
+theme = ExtResource("7_pfovo")
+text = "Main Menu"
+
 [connection signal="body_entered" from="ScoringArea" to="." method="_on_scoring_area_body_entered"]
+[connection signal="body_entered" from="LosingArea" to="." method="_on_losing_area_body_entered"]
+[connection signal="pressed" from="GameOverScreen/MarginContainer/VBoxContainer/Retry" to="." method="_on_retry_pressed"]
+[connection signal="pressed" from="GameOverScreen/MarginContainer/VBoxContainer/Main Menu" to="." method="_on_main_menu_pressed"]

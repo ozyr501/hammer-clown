@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://b6bdt6oxi6j2x"]
 
 [ext_resource type="Script" uid="uid://dmqqjmeuw2pag" path="res://scenes/main_menu/new_game.gd" id="1_axelx"]
+[ext_resource type="Theme" uid="uid://dhatq1k57h6e2" path="res://materials/MenuButtonMaterial.tres" id="1_xr86y"]
 [ext_resource type="Script" uid="uid://bfqvpkcbd2xqa" path="res://scenes/main_menu/exit.gd" id="2_xr86y"]
 
 [node name="MainMenu" type="Control" unique_id=1911957424]
@@ -24,14 +25,17 @@ offset_right = 20.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 12
 
 [node name="New Game" type="Button" parent="Buttons" unique_id=1839945189]
 layout_mode = 2
+theme = ExtResource("1_xr86y")
 text = "New Game"
 script = ExtResource("1_axelx")
 
 [node name="Exit" type="Button" parent="Buttons" unique_id=1333263428]
 layout_mode = 2
+theme = ExtResource("1_xr86y")
 text = "Exit"
 script = ExtResource("2_xr86y")
 

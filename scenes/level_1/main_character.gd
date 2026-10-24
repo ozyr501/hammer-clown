@@ -5,6 +5,8 @@ const CHARACTER_MAX_SPEED = 300.0
 const CHARACTER_PASSIVE_DECELERATION = 1000.0
 
 const THROW_STRENGTH = 0.2
+const MAX_THROW_VELOCITY = 1500.0
+const OVERREACH_MARGIN = 10.0
 
 @onready var grab_area: Area2D = $Area2D
 @onready var grab_area_shape: CollisionShape2D = $Area2D/CollisionShape2D
@@ -66,7 +68,7 @@ func hold_or_throw(delta: float) -> void:
 	var arm_length = grab_area_shape.shape.radius
 
 	mouse_velocity = mouse_motion / delta
-	held_offset = (held_offset + mouse_motion * THROW_STRENGTH).limit_length(arm_length)
+	held_offset = (held_offset + mouse_motion * THROW_STRENGTH).limit_length(arm_length + OVERREACH_MARGIN)
 	mouse_motion = Vector2.ZERO
 
 	if not is_instance_valid(held_body):
@@ -76,5 +78,6 @@ func hold_or_throw(delta: float) -> void:
 	held_body.set_hold_position(global_position + held_offset)
 
 	if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-		held_body.release(mouse_velocity * THROW_STRENGTH)
+		held_body.release((mouse_velocity * THROW_STRENGTH).limit_length(MAX_THROW_VELOCITY))
+		print("thrown with velocity: ", mouse_velocity * THROW_STRENGTH)
 		held_body = null
