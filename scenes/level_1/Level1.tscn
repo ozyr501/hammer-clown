@@ -1,17 +1,29 @@
 [gd_scene format=3 uid="uid://detjtb3sxgg67"]
 
+[ext_resource type="Script" uid="uid://dbxlo7u5y7rr4" path="res://scenes/level_1/level_1.gd" id="1_0xxql"]
 [ext_resource type="Texture2D" uid="uid://b4jn3qm4a1yiq" path="res://icon.svg" id="1_a8rhv"]
 [ext_resource type="Script" uid="uid://ce50voeolrnc" path="res://scenes/level_1/main_character.gd" id="2_ff1sk"]
+[ext_resource type="Script" uid="uid://dn5jpe5n8dpp5" path="res://scenes/level_1/juggleable_body.gd" id="3_juggleable"]
+[ext_resource type="Texture2D" uid="uid://t0ve1s2r08sd" path="res://halo.png" id="4_g8mao"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_0pk7q"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0pk7q"]
 size = Vector2(64, 128)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_0xxql"]
+radius = 72.0
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_xrb6a"]
+normal = Vector2(0, 1)
+
 [node name="Level1" type="Node2D" unique_id=1729192901]
+script = ExtResource("1_0xxql")
 
 [node name="Floor" type="StaticBody2D" parent="." unique_id=1235508004]
 position = Vector2(936, 1024)
+collision_layer = 3
+collision_mask = 3
 
 [node name="FloorColider" type="CollisionShape2D" parent="Floor" unique_id=1569185143]
 shape = SubResource("WorldBoundaryShape2D_0pk7q")
@@ -31,3 +43,68 @@ shape = SubResource("RectangleShape2D_0pk7q")
 [node name="Sprite2D" type="Sprite2D" parent="MainCharacter" unique_id=1001353163]
 scale = Vector2(0.5, 1)
 texture = ExtResource("1_a8rhv")
+
+[node name="Area2D" type="Area2D" parent="MainCharacter" unique_id=1108325038]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MainCharacter/Area2D" unique_id=2014345377]
+shape = SubResource("CircleShape2D_0xxql")
+
+[node name="Sprite2D" type="Sprite2D" parent="MainCharacter/Area2D" unique_id=1747845953]
+scale = Vector2(0.145, 0.145)
+texture = ExtResource("4_g8mao")
+
+[node name="Hammer" type="RigidBody2D" parent="." unique_id=724063589 groups=["Juggleable"]]
+position = Vector2(1131, 452)
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("3_juggleable")
+
+[node name="Handle" type="Sprite2D" parent="Hammer" unique_id=1694543593]
+position = Vector2(0, -1.513958e-05)
+scale = Vector2(0.0625, 0.24999937)
+texture = ExtResource("1_a8rhv")
+
+[node name="Head" type="Sprite2D" parent="Hammer" unique_id=917176081]
+position = Vector2(2.1219254e-05, -20.00003)
+scale = Vector2(0.25000003, 0.06250016)
+texture = ExtResource("1_a8rhv")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hammer" unique_id=1181137927]
+polygon = PackedVector2Array(-4, 16, 4, 16, 4, -16, 16, -16, 16, -24, -16, -24, -16, -16, -4, -16)
+
+[node name="ScoringArea" type="Area2D" parent="." unique_id=1866726746]
+position = Vector2(952, 576)
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ScoringArea" unique_id=981385864]
+shape = SubResource("WorldBoundaryShape2D_xrb6a")
+
+[node name="Sprite2D" type="Sprite2D" parent="ScoringArea" unique_id=496607345]
+position = Vector2(8.000023, -2)
+scale = Vector2(15, 0.031250004)
+texture = ExtResource("1_a8rhv")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=872330944]
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=1351215836]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer" unique_id=1600241787]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+text = "Score: 0"
+
+[connection signal="body_entered" from="ScoringArea" to="." method="_on_scoring_area_body_entered"]
