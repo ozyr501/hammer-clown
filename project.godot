@@ -20,7 +20,6 @@ config/icon="res://icon.svg"
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/stretch/mode="canvas_items"
-window/stretch/aspect="expand"
 
 [input]
 
@@ -45,6 +44,7 @@ reset={
 [physics]
 
 3d/physics_engine="Jolt Physics"
+2d/default_gravity=720.0
 
 [rendering]
 

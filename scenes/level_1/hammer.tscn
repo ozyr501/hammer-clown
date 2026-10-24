@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://b6px8colf8la0"]
+
+[ext_resource type="Script" uid="uid://dn5jpe5n8dpp5" path="res://scenes/level_1/juggleable_body.gd" id="1_gpni4"]
+[ext_resource type="Texture2D" uid="uid://dbj2ucys7ooeu" path="res://assets/hammer.png" id="2_eb52n"]
+
+[node name="Hammer" type="RigidBody2D" unique_id=1501323827 groups=["Juggleable"]]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_gpni4")
+
+[node name="Head" type="Sprite2D" parent="." unique_id=1193029264]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_eb52n")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=958031210]
+polygon = PackedVector2Array(-2, 20, 6, 20, 6, -12, 18, -12, 18, -20, -10, -20, -18, -12, -2, -12)

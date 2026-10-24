@@ -8,15 +8,18 @@ extends Node2D
 
 @onready var main_character: CharacterBody2D = $MainCharacter
 
+const HAMMER_SCENE = preload("res://scenes/level_1/hammer.tscn")
+
 var score : int = 0
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	spawn_hammer()
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT and not game_over_screen.visible:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	if event.is_action_pressed("reset"):
 		get_tree().reload_current_scene()
@@ -24,7 +27,6 @@ func _input(event: InputEvent) -> void:
 func _exit_tree() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	PhysicsServer2D.set_active(true)
-	
 
 
 func _on_scoring_area_body_entered(body: Node2D) -> void:
@@ -48,3 +50,11 @@ func _on_retry_pressed() -> void:
 func _on_main_menu_pressed() -> void:
 	PhysicsServer2D.set_active(true)
 	get_tree().change_scene_to_file("res://scenes/main_menu/MainMenu.tscn")
+	
+func spawn_hammer():
+	var hammer := HAMMER_SCENE.instantiate() as RigidBody2D
+	add_child(hammer)
+	hammer.global_position = Vector2(randf_range(32.0, 1888.0), 50.0)
+
+func _on_hammer_spawn_timer_timeout() -> void:
+	spawn_hammer()

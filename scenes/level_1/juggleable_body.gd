@@ -34,6 +34,7 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 
 	if _release_requested:
 		state.linear_velocity = _release_velocity
+		state.angular_velocity = randf_range(-10.0, 10.0)
 		_is_held = false
 		_release_requested = false
 		custom_integrator = false
