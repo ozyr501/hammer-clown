@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://detjtb3sxgg67"]
+
+[ext_resource type="Texture2D" uid="uid://b4jn3qm4a1yiq" path="res://icon.svg" id="1_a8rhv"]
+[ext_resource type="Script" uid="uid://ce50voeolrnc" path="res://scenes/level_1/main_character.gd" id="2_ff1sk"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_0pk7q"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0pk7q"]
+size = Vector2(64, 128)
+
+[node name="Level1" type="Node2D" unique_id=1729192901]
+
+[node name="Floor" type="StaticBody2D" parent="." unique_id=1235508004]
+position = Vector2(936, 1024)
+
+[node name="FloorColider" type="CollisionShape2D" parent="Floor" unique_id=1569185143]
+shape = SubResource("WorldBoundaryShape2D_0pk7q")
+
+[node name="FlorTexture" type="Sprite2D" parent="Floor" unique_id=202856748]
+position = Vector2(23.99992, 32)
+scale = Vector2(15, 0.47070304)
+texture = ExtResource("1_a8rhv")
+
+[node name="MainCharacter" type="CharacterBody2D" parent="." unique_id=1451177610]
+position = Vector2(936, 952)
+script = ExtResource("2_ff1sk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MainCharacter" unique_id=1434073298]
+shape = SubResource("RectangleShape2D_0pk7q")
+
+[node name="Sprite2D" type="Sprite2D" parent="MainCharacter" unique_id=1001353163]
+scale = Vector2(0.5, 1)
+texture = ExtResource("1_a8rhv")
