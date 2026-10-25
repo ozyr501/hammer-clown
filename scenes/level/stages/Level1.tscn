@@ -11,6 +11,8 @@
 [ext_resource type="AudioStream" uid="uid://ce1iasuhkc3q3" path="res://assets/carnivalrides.ogg" id="9_rx0hq"]
 [ext_resource type="AudioStream" uid="uid://div2la1iffb7e" path="res://assets/802465__sadiquecat__stick-whoosh-7-soft.wav" id="10_w7lhp"]
 
+[ext_resource type="PackedScene" path="res://scenes/level/pause_screen.tscn" id="11_pause"]
+
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_0pk7q"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_c6ncp"]
@@ -193,6 +195,8 @@ stream = ExtResource("9_rx0hq")
 volume_db = -5.0
 autoplay = true
 parameters/looping = true
+
+[node name="PauseScreen" parent="." instance=ExtResource("11_pause")]
 
 [connection signal="body_entered" from="ScoringArea" to="." method="_on_scoring_area_body_entered"]
 [connection signal="body_entered" from="LosingArea" to="." method="_on_losing_area_body_entered"]

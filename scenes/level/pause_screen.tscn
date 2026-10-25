@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://c7sjywjjff4g"]
+
+[ext_resource type="Script" uid="uid://b4ud8v02wvip5" path="res://scenes/level/pause_screen.gd" id="1_script"]
+[ext_resource type="Theme" uid="uid://dhatq1k57h6e2" path="res://materials/MenuButtonMaterial.tres" id="2_theme"]
+
+[node name="PauseScreen" type="CanvasLayer" unique_id=1950422567]
+process_mode = 3
+layer = 2
+visible = false
+script = ExtResource("1_script")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=368440303]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.078431375, 0.078431375, 0.078431375, 0.81960785)
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1482905916]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=669371976]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 12
+
+[node name="CurrentScoreLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=2067818034]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 64
+text = "Current score: 0"
+
+[node name="Resume" type="Button" parent="MarginContainer/VBoxContainer" unique_id=2053970861]
+layout_mode = 2
+theme = ExtResource("2_theme")
+text = "Resume"
+
+[node name="Main Menu" type="Button" parent="MarginContainer/VBoxContainer" unique_id=237372535]
+layout_mode = 2
+theme = ExtResource("2_theme")
+text = "Main Menu"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Main Menu" to="." method="_on_main_menu_pressed"]

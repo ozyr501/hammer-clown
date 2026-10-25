@@ -3,6 +3,7 @@ extends Node2D
 @onready var scoring_area: Area2D = $ScoringArea
 @onready var label: Label = $UI/MarginContainer/ScoreLabel
 
+@onready var pause_screen: CanvasLayer = $PauseScreen
 @onready var game_over_screen: CanvasLayer = $GameOverScreen
 @onready var final_score_label: Label = $GameOverScreen/MarginContainer/VBoxContainer/FinalScoreLabel
 
@@ -24,8 +25,10 @@ func _ready() -> void:
 	spawn_cart()
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel"):
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	if event.is_action_pressed("exit") and not game_over_screen.visible:
+		get_viewport().set_input_as_handled()
+		pause_screen.pause_game(score)
+		return
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT and not game_over_screen.visible:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	if event.is_action_pressed("reset"):
