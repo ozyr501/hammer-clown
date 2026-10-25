@@ -8,6 +8,7 @@ var half_width := 0.0
 
 @onready var nail_sprite: Sprite2D = $NailSprite
 @onready var nail_area: Area2D = $NailArea
+@onready var hammer_sound: AudioStreamPlayer = $HammerSound
 
 func _ready() -> void:
 	sync_to_physics = false
@@ -36,8 +37,7 @@ func _on_nail_area_body_entered(body: Node2D) -> void:
 	if not body is JuggleableBody2D:
 		return
 
-	print("Hammer time")
-
 	nail_sprite.position = Vector2(0.0, -12.0)
 	nail_area.set_deferred("monitoring", false)
 	score_bonus_points.emit()
+	hammer_sound.play()

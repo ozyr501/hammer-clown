@@ -8,7 +8,7 @@ extends Node2D
 
 @onready var main_character: CharacterBody2D = $MainCharacter
 
-const HAMMER_SCENE = preload("res://scenes/level_1/hammer.tscn")
+const HAMMER_SCENE = preload("res://scenes/level/hammer.tscn")
 const CART = preload("uid://btk6c8eiskgq4")
 
 var score : int = 0
@@ -22,6 +22,7 @@ func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	spawn_hammer()
 	spawn_cart()
+	main_character.friction_modifier = 0.2
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):

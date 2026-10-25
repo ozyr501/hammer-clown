@@ -3,18 +3,24 @@ extends CharacterBody2D
 const CHARACTER_ACCELERATION = 2000.0
 const CHARACTER_MAX_SPEED = 1500.0
 const CHARACTER_PASSIVE_DECELERATION = 8000.0
+const JUMP_VELOCITY = -600.0
 
 const THROW_STRENGTH = 0.40
-const MAX_THROW_VELOCITY = 1400.0
+const MAX_THROW_VELOCITY = 1800.0
 const OVERREACH_MARGIN = 50.0
+
+
 
 @onready var grab_area: Area2D = $Area2D
 @onready var grab_area_shape: CollisionShape2D = $Area2D/CollisionShape2D
+@onready var swing_sound: AudioStreamPlayer = $SwingSound
 
 var held_body: JuggleableBody2D
 var held_offset := Vector2.ZERO
 var mouse_motion := Vector2.ZERO
 var mouse_velocity := Vector2.ZERO
+
+var friction_modifier = 1
 
 # overrides
 
@@ -51,13 +57,16 @@ func grab() -> void:
 # physics process
 
 func movement(delta: float) -> void:
-	velocity += get_gravity() * delta
+	velocity += get_gravity() * delta * 1.5
+	if Input.is_action_just_pressed("jump") and is_on_floor():
+		velocity.y = JUMP_VELOCITY
+
 	var horizontal_input = Input.get_axis("move_left", "move_right")
 	if velocity.x == 0 or sign(horizontal_input) == sign(velocity.x):
 		velocity.x += horizontal_input * CHARACTER_ACCELERATION * delta
 	else:
 		var initial_velocity_sign = sign(velocity.x)
-		velocity.x -= CHARACTER_PASSIVE_DECELERATION * delta * initial_velocity_sign
+		velocity.x -= CHARACTER_PASSIVE_DECELERATION * delta * initial_velocity_sign * friction_modifier
 		if initial_velocity_sign != sign(velocity.x) and horizontal_input == 0:
 			velocity.x = 0
 		
@@ -81,5 +90,5 @@ func hold_or_throw(delta: float) -> void:
 
 	if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		held_body.release((mouse_velocity * THROW_STRENGTH).limit_length(MAX_THROW_VELOCITY))
-		print("thrown with velocity: ", mouse_velocity * THROW_STRENGTH)
 		held_body = null
+		swing_sound.play()

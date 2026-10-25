@@ -1,14 +1,15 @@
 [gd_scene format=3 uid="uid://detjtb3sxgg67"]
 
-[ext_resource type="Script" uid="uid://dbxlo7u5y7rr4" path="res://scenes/level_1/level_1.gd" id="1_0xxql"]
+[ext_resource type="Script" uid="uid://dbxlo7u5y7rr4" path="res://scenes/level/stages/level_1.gd" id="1_0xxql"]
 [ext_resource type="Texture2D" uid="uid://b4jn3qm4a1yiq" path="res://icon.svg" id="1_a8rhv"]
-[ext_resource type="Script" uid="uid://ce50voeolrnc" path="res://scenes/level_1/main_character.gd" id="2_ff1sk"]
+[ext_resource type="Script" uid="uid://ce50voeolrnc" path="res://scenes/level/main_character.gd" id="2_ff1sk"]
 [ext_resource type="Texture2D" uid="uid://dh8jbc7bmuafu" path="res://assets/background.png" id="2_rx0hq"]
 [ext_resource type="PhysicsMaterial" uid="uid://cgxps2n8fgf76" path="res://materials/wall_material.tres" id="3_cpaln"]
 [ext_resource type="Texture2D" uid="uid://bal47wmgpxum2" path="res://assets/floor.png" id="3_w7lhp"]
 [ext_resource type="Texture2D" uid="uid://t0ve1s2r08sd" path="res://halo.png" id="4_g8mao"]
 [ext_resource type="Theme" uid="uid://dhatq1k57h6e2" path="res://materials/MenuButtonMaterial.tres" id="7_pfovo"]
 [ext_resource type="AudioStream" uid="uid://ce1iasuhkc3q3" path="res://assets/carnivalrides.ogg" id="9_rx0hq"]
+[ext_resource type="AudioStream" uid="uid://div2la1iffb7e" path="res://assets/802465__sadiquecat__stick-whoosh-7-soft.wav" id="10_w7lhp"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_0pk7q"]
 
@@ -86,6 +87,10 @@ shape = SubResource("CircleShape2D_0xxql")
 [node name="Sprite2D" type="Sprite2D" parent="MainCharacter/Area2D" unique_id=1747845953]
 scale = Vector2(0.145, 0.145)
 texture = ExtResource("4_g8mao")
+
+[node name="SwingSound" type="AudioStreamPlayer" parent="MainCharacter" unique_id=93711884]
+stream = ExtResource("10_w7lhp")
+volume_db = 5.0
 
 [node name="ScoringArea" type="Area2D" parent="." unique_id=1866726746]
 position = Vector2(952, 576)
@@ -183,8 +188,9 @@ autostart = true
 wait_time = 20.0
 autostart = true
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1719715086]
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="." unique_id=1719715086]
 stream = ExtResource("9_rx0hq")
+volume_db = -5.0
 autoplay = true
 parameters/looping = true
 
