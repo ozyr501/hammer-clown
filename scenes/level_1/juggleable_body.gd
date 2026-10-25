@@ -3,7 +3,7 @@ extends RigidBody2D
 
 @onready var arrow: Sprite2D = $Arrow
 
-const TERMINAL_VELOCITY = 1000.0
+const TERMINAL_VELOCITY = 800.0
 
 var _is_held := false
 var _held_transform := Transform2D.IDENTITY

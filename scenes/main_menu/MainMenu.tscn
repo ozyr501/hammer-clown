@@ -1,8 +1,13 @@
 [gd_scene format=3 uid="uid://b6bdt6oxi6j2x"]
 
-[ext_resource type="Script" uid="uid://dmqqjmeuw2pag" path="res://scenes/main_menu/new_game.gd" id="1_axelx"]
+[ext_resource type="Texture2D" uid="uid://4fupk5cqqhmf" path="res://assets/menu_background_2.png" id="1_f1mbi"]
+[ext_resource type="Script" uid="uid://dyf2abfo00bw0" path="res://scenes/main_menu/main_menu.gd" id="1_menu"]
 [ext_resource type="Theme" uid="uid://dhatq1k57h6e2" path="res://materials/MenuButtonMaterial.tres" id="1_xr86y"]
-[ext_resource type="Script" uid="uid://bfqvpkcbd2xqa" path="res://scenes/main_menu/exit.gd" id="2_xr86y"]
+[ext_resource type="Texture2D" uid="uid://bmxrs0ce8xwdv" path="res://assets/fog.png" id="3_arvcj"]
+[ext_resource type="Texture2D" uid="uid://cl1po25s57ilw" path="res://assets/logo.png" id="4_qmweu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wckin"]
+bg_color = Color(0.004019165, 0.004019165, 0.004019165, 0.70980394)
 
 [node name="MainMenu" type="Control" unique_id=1911957424]
 layout_mode = 3
@@ -11,8 +16,36 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_menu")
 
-[node name="Buttons" type="VBoxContainer" parent="." unique_id=1141067003]
+[node name="Background" type="Control" parent="." unique_id=1994889808]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MainBackground" type="TextureRect" parent="Background" unique_id=1200861850]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("1_f1mbi")
+
+[node name="FogParalax" type="Parallax2D" parent="Background" unique_id=807564201]
+modulate = Color(1, 1, 1, 0.09803922)
+repeat_size = Vector2(3840, 2160)
+repeat_times = 3
+ignore_camera_scroll = true
+
+[node name="FogTexture" type="Sprite2D" parent="Background/FogParalax" unique_id=299757672]
+texture_repeat = 2
+texture = ExtResource("3_arvcj")
+
+[node name="Logo" type="TextureRect" parent="Background" unique_id=1060279401]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("4_qmweu")
+
+[node name="MenuButtons" type="VBoxContainer" parent="." unique_id=1141067003]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -27,17 +60,71 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 12
 
-[node name="New Game" type="Button" parent="Buttons" unique_id=1839945189]
+[node name="New Game" type="Button" parent="MenuButtons" unique_id=1839945189]
 layout_mode = 2
 theme = ExtResource("1_xr86y")
 text = "New Game"
-script = ExtResource("1_axelx")
 
-[node name="Exit" type="Button" parent="Buttons" unique_id=1333263428]
+[node name="Instructions" type="Button" parent="MenuButtons" unique_id=2068933890]
+layout_mode = 2
+theme = ExtResource("1_xr86y")
+text = "How to play"
+
+[node name="Exit" type="Button" parent="MenuButtons" unique_id=1333263428]
 layout_mode = 2
 theme = ExtResource("1_xr86y")
 text = "Exit"
-script = ExtResource("2_xr86y")
 
-[connection signal="pressed" from="Buttons/New Game" to="Buttons/New Game" method="_on_pressed"]
-[connection signal="pressed" from="Buttons/Exit" to="Buttons/Exit" method="_on_pressed"]
+[node name="Instructions" type="PanelContainer" parent="." unique_id=1355719276]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -77.0
+offset_top = -24.5
+offset_right = 77.0
+offset_bottom = 24.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Instructions background" type="Panel" parent="Instructions" unique_id=979989240]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_wckin")
+
+[node name="MarginContainer" type="MarginContainer" parent="Instructions" unique_id=760166626]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Instructions/MarginContainer" unique_id=717672995]
+layout_mode = 2
+theme_override_constants/separation = 90
+
+[node name="Instructions text" type="Label" parent="Instructions/MarginContainer/VBoxContainer" unique_id=677888695]
+layout_mode = 2
+theme = ExtResource("1_xr86y")
+text = "How to play?
+
+Move left to right using A and D or left and right arrows
+
+Press w or up arrow or space to jump
+
+Grab a falling hammer when in range by pressing left mouse button
+
+Then swing mouse up and relese the button to throw hammer above marked line
+
+If you hit a nail with a hammer you will score bonus poinst"
+
+[node name="Back" type="Button" parent="Instructions/MarginContainer/VBoxContainer" unique_id=836969892]
+layout_mode = 2
+theme = ExtResource("1_xr86y")
+text = "Back"
+
+[connection signal="pressed" from="MenuButtons/New Game" to="." method="_on_new_game_pressed"]
+[connection signal="pressed" from="MenuButtons/Instructions" to="." method="_on_instructions_pressed"]
+[connection signal="pressed" from="MenuButtons/Exit" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="Instructions/MarginContainer/VBoxContainer/Back" to="." method="_on_back_pressed"]
